@@ -1,368 +1,418 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <title>Math Formula Vault</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        :root {
-            /* Light Mode Colors */
-            --bg-primary-light: #f0f4f8;
-            --bg-secondary-light: #ffffff;
-            --text-primary-light: #1a2b3c;
-            --text-secondary-light: #4a5f6d;
-            --accent-color-light: #3498db;
-            --hover-color-light: #2980b9;
+      :root {
+        --bg-primary-light: #f0f4f8;
+        --bg-secondary-light: #ffffff;
+        --text-primary-light: #1a2b3c;
+        --text-secondary-light: #4a5f6d;
+        --accent-color-light: #3498db;
+        --hover-color-light: #2980b9;
+        --bg-primary-dark: #0a1128;
+        --bg-secondary-dark: #142850;
+        --text-primary-dark: #ffffff;
+        --text-secondary-dark: #b0bec5;
+        --accent-color-dark: #00a8e8;
+        --hover-color-dark: #007ea7;
+        --bg-primary: var(--bg-primary-light);
+        --bg-secondary: var(--bg-secondary-light);
+        --text-primary: var(--text-primary-light);
+        --text-secondary: var(--text-secondary-light);
+        --accent-color: var(--accent-color-light);
+        --hover-color: var(--hover-color-light)
+      }
 
-            /* Dark Mode Colors */
-            --bg-primary-dark: #0a1128;
-            --bg-secondary-dark: #142850;
-            --text-primary-dark: #ffffff;
-            --text-secondary-dark: #b0bec5;
-            --accent-color-dark: #00a8e8;
-            --hover-color-dark: #007ea7;
+      body.dark-mode {
+        --bg-primary: var(--bg-primary-dark);
+        --bg-secondary: var(--bg-secondary-dark);
+        --text-primary: var(--text-primary-dark);
+        --text-secondary: var(--text-secondary-dark);
+        --accent-color: var(--accent-color-dark);
+        --hover-color: var(--hover-color-dark)
+      }
 
-            /* Default to Light Mode */
-            --bg-primary: var(--bg-primary-light);
-            --bg-secondary: var(--bg-secondary-light);
-            --text-primary: var(--text-primary-light);
-            --text-secondary: var(--text-secondary-light);
-            --accent-color: var(--accent-color-light);
-            --hover-color: var(--hover-color-light);
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        transition: background-color .3s, color .3s
+      }
 
-        body.dark-mode {
-            --bg-primary: var(--bg-primary-dark);
-            --bg-secondary: var(--bg-secondary-dark);
-            --text-primary: var(--text-primary-dark);
-            --text-secondary: var(--text-secondary-dark);
-            --accent-color: var(--accent-color-dark);
-            --hover-color: var(--hover-color-dark);
-        }
+      body {
+        font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        perspective: 1000px
+      }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            transition: background-color 0.3s, color 0.3s;
-        }
+      .container {
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+        padding: 2rem;
+        flex-grow: 1
+      }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            perspective: 1000px;
-        }
+      .top-header {
+        background-color: var(--bg-secondary);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .1);
+        padding: 1rem 0
+      }
 
-        .container {
-            max-width: 800px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 2rem;
-            flex-grow: 1;
-        }
+      .header-content {
+        max-width: 800px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 2rem
+      }
 
-        .top-header {
-            background-color: var(--bg-secondary);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            padding: 1rem 0;
-        }
+      .site-title {
+        display: flex;
+        align-items: center;
+        font-size: 1.5rem;
+        color: var(--accent-color);
+        font-weight: 700
+      }
 
-        .header-content {
-            max-width: 800px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
+      .site-title i {
+        margin-right: 10px
+      }
 
-        .site-title {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            font-weight: bold;
-        }
+      .mode-toggle {
+        background: 0 0;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: var(--text-secondary);
+        transition: all .3s ease
+      }
 
-        .site-title i {
-            margin-right: 10px;
-        }
+      .mode-toggle:hover {
+        color: var(--accent-color);
+        transform: rotate(180deg)
+      }
 
-        .mode-toggle {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-size: 1.5rem;
-            color: var(--text-secondary);
-            transition: all 0.3s ease;
-        }
+      .search-container {
+        position: relative;
+        flex-grow: 1;
+        margin-left: 2rem
+      }
 
-        .mode-toggle:hover {
-            color: var(--accent-color);
-            transform: rotate(180deg);
-        }
+      #search-input {
+        width: 100%;
+        padding: .75rem 1rem .75rem 2.5rem;
+        border: 2px solid var(--text-secondary);
+        border-radius: 20px;
+        font-size: 1rem;
+        background-color: var(--bg-secondary);
+        color: var(--text-primary);
+        transition: all .3s ease
+      }
 
-        .search-container {
-            position: relative;
-            flex-grow: 1;
-            margin-left: 2rem;
-        }
+      #search-input:focus {
+        outline: 0;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, .2)
+      }
 
-        #search-input {
-            width: 100%;
-            padding: 0.75rem 1rem 0.75rem 2.5rem;
-            border: 2px solid var(--text-secondary);
-            border-radius: 20px;
-            font-size: 1rem;
-            background-color: var(--bg-secondary);
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-        }
+      .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary)
+      }
 
-        #search-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-        }
+      #formulas-list {
+        display: grid;
+        gap: 1rem;
+        margin-top: 2rem
+      }
 
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-secondary);
-        }
+      .formula-item {
+        background-color: var(--bg-secondary);
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, .1);
+        transition: all .3s ease;
+        position: relative;
+        overflow: hidden
+      }
 
-        #formulas-list {
-            display: grid;
-            gap: 1rem;
-            margin-top: 2rem;
-        }
+      .formula-item::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at center, transparent 0, var(--accent-color) 100%);
+        opacity: 0;
+        transition: opacity .3s ease
+      }
 
-        .formula-item {
-            background-color: var(--bg-secondary);
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
+      .formula-item:hover::before {
+        opacity: .1
+      }
 
-        .formula-item::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at center, transparent 0%, var(--accent-color) 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+      .formula-item:hover {
+        transform: translateY(-5px) rotateX(3deg);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, .15)
+      }
 
-        .formula-item:hover::before {
-            opacity: 0.1;
-        }
+      .formula-name {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: var(--accent-color);
+        margin-bottom: .5rem
+      }
 
-        .formula-item:hover {
-            transform: translateY(-5px) rotateX(3deg);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
+      .formula-equation {
+        font-family: 'Courier New', monospace;
+        background-color: var(--bg-primary);
+        display: inline-block;
+        padding: .5rem;
+        border-radius: 5px;
+        margin: .5rem 0;
+        color: var(--text-primary);
+        border: 1px solid var(--text-secondary)
+      }
 
-        .formula-name {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--accent-color);
-            margin-bottom: 0.5rem;
-        }
+      .formula-description {
+        color: var(--text-secondary);
+        font-style: italic
+      }
 
-        .formula-equation {
-            font-family: 'Courier New', monospace;
-            background-color: var(--bg-primary);
-            display: inline-block;
-            padding: 0.5rem;
-            border-radius: 5px;
-            margin: 0.5rem 0;
-            color: var(--text-primary);
-            border: 1px solid var(--text-secondary);
-        }
+      .formula-keywords {
+        margin-top: .5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem
+      }
 
-        .formula-description {
-            color: var(--text-secondary);
-            font-style: italic;
-        }
+      .keyword-tag {
+        background-color: var(--accent-color);
+        color: #fff;
+        padding: .25rem .5rem;
+        border-radius: 15px;
+        font-size: .8rem;
+        opacity: .7
+      }
 
-        .formula-keywords {
-            margin-top: 0.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
+      .footer {
+        background-color: var(--bg-secondary);
+        padding: 1.5rem 0;
+        text-align: center;
+        color: var(--text-secondary);
+        box-shadow: 0 -2px 4px rgba(0, 0, 0, .1);
+        margin-top: 2rem
+      }
 
-        .keyword-tag {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
+      .footer-content {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 2rem
+      }
 
-        .footer {
-            background-color: var(--bg-secondary);
-            padding: 1.5rem 0;
-            text-align: center;
-            color: var(--text-secondary);
-            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-            margin-top: 2rem;
-        }
+      .social-links {
+        margin-top: 1rem
+      }
 
-        .footer-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+      .social-links a {
+        color: var(--text-secondary);
+        margin: 0 10px;
+        text-decoration: none;
+        font-size: 1.5rem;
+        transition: color .3s ease, transform .3s ease
+      }
 
-        .social-links {
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            color: var(--text-secondary);
-            margin: 0 10px;
-            text-decoration: none;
-            font-size: 1.5rem;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: var(--accent-color);
-            transform: scale(1.2) rotate(360deg);
-        }
+      .social-links a:hover {
+        color: var(--accent-color);
+        transform: scale(1.2) rotate(360deg)
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header class="top-header">
-        <div class="header-content">
-            <div class="site-title">
-                <i class="fas fa-calculator"></i>
-                Math Formula Vault
-            </div>
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input type="text" id="search-input" placeholder="Search formulas...">
-            </div>
-            <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark mode">
-                <i class="fas fa-moon"></i>
-            </button>
+      <div class="header-content">
+        <div class="site-title">
+          <i class="fas fa-calculator"></i>Math Formula Vault
         </div>
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="search-input" placeholder="Search formulas...">
+        </div>
+        <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark mode">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
     </header>
-
     <div class="container">
-        <div id="formulas-list"></div>
+      <div id="formulas-list"></div>
     </div>
-
     <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2024 Math Formula Vault By Pavan.</p>
-            <div class="social-links">
-                <a href="https://www.instagram.com/pavan._.hegde/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-            </div>
+      <div class="footer-content">
+        <p>&copy; 2024 Math Formula Vault By Pavan.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/pavan._.hegde/" aria-label="Instagram">
+            <i class="fab fa-instagram"></i>
+          </a>
         </div>
+      </div>
     </footer>
-
     <script>
-        const formulas = [
-            {
-                name: "Pythagorean Theorem",
-                equation: "a² + b² = c²",
-                description: "Relates the lengths of the sides of a right triangle in Euclidean geometry",
-                keywords: ["geometry", "triangle", "right triangle"]
-            },
-            {
-                name: "Quadratic Formula",
-                equation: "x = [-b ± √(b² - 4ac)] / 2a",
-                description: "Solves quadratic equations of the form ax² + bx + c = 0",
-                keywords: ["algebra", "equation", "roots"]
-            },
-            {
-                name: "Area of a Circle",
-                equation: "A = πr²",
-                description: "Calculates the total space inside a circular region using radius",
-                keywords: ["geometry", "circle", "area"]
-            },
-            {
-                name: "Sine Function",
-                equation: "sin(θ) = opposite / hypotenuse",
-                description: "A fundamental trigonometric function in a right triangle",
-                keywords: ["trigonometry", "triangle", "angle"]
-            },
-            {
-                name: "Euler's Formula",
-                equation: "e^(iπ) + 1 = 0",
-                description: "A profound mathematical identity connecting fundamental constants",
-                keywords: ["complex numbers", "advanced math"]
-            }
-        ];
+      const formulas = [{
+          name: "Pythagorean Theorem",
+          equation: "a² + b² = c²",
+          description: "Relates the lengths of the sides of a right triangle in Euclidean geometry",
+          keywords: ["geometry", "triangle", "right triangle"]
+        }, {
+          name: "Quadratic equation Formula",
+          equation: "x = [-b ± √(b² - 4ac)] / 2a",
+          description: "Solves quadratic equations of the form ax² + bx + c = 0",
+          keywords: ["algebra", "equation", "roots"]
+        }, {
+          name: "nth Term of an AP",
+          equation: "an = a + (n-1)d",
+          description: "Calculates the nth term of an arithmetic progression",
+          keywords: ["arithmetic progression", "AP", "nth term"]
+        }, {
+          name: "Sum of n terms of an AP",
+          equation: "Sn = n/2 [2a + (n-1)d]",
+          description: "Calculates the sum of the first n terms of an arithmetic progression",
+          keywords: ["arithmetic progression", "AP", "sum of n terms"]
+        },
+        // Geometric Progression (GP)
+        {
+          name: "nth Term of a GP",
+          equation: "an = ar^(n-1)",
+          description: "Calculates the nth term of a geometric progression",
+          keywords: ["geometric progression", "GP", "nth term"]
+        }, {
+          name: "Sum of n terms of a GP",
+          equation: "Sn = a(r^n - 1) / (r-1)",
+          description: "Calculates the sum of the first n terms of a geometric progression",
+          keywords: ["geometric progression", "GP", "sum of n terms"]
+        }, {
+          name: "Sum of Infinite GP",
+          equation: "S∞ = a / (1-r)",
+          description: "Calculates the sum of an infinite geometric progression",
+          keywords: ["geometric progression", "GP", "infinite sum"]
+        },
+        // Trigonometry
+        {
+          name: "Trigonometric Ratios",
+          equation: "sinθ = opposite/hypotenuse, cosθ = adjacent/hypotenuse, tanθ = opposite/adjacent",
+          description: "Defines the basic trigonometric ratios in a right-angled triangle",
+          keywords: ["trigonometry", "sin", "cos", "tan"]
+        }, {
+          name: "Trigonometric Identities",
+          equation: "sin²θ + cos²θ = 1, 1 + tan²θ = sec²θ, 1 + cot²θ = cosec²θ",
+          description: "Fundamental trigonometric identities",
+          keywords: ["trigonometry", "identities"]
+        },
+        // Coordinate Geometry
+        {
+          name: "Distance Formula",
+          equation: "d = √[(x₂-x₁)² + (y₂-y₁)²]",
+          description: "Calculates the distance between two points",
+          keywords: ["coordinate geometry", "distance formula"]
+        }, {
+          name: "Section Formula",
+          equation: "x = (mx₂ + nx₁) / (m+n), y = (my₂ + ny₁) / (m+n)",
+          description: "Calculates the coordinates of a point dividing a line segment in a given ratio",
+          keywords: ["coordinate geometry", "section formula"]
+        }, {
+          name: "Area of a Triangle",
+          equation: "Area = 1/2 |x₁(y₂-y₃) + x₂(y₃-y₁) + x₃(y₁-y₂)|",
+          description: "Calculates the area of a triangle given the coordinates of its vertices",
+          keywords: ["coordinate geometry", "area of triangle"]
+        },
+        // Mensuration
+        {
+          name: "Surface Area and Volume of a Cube",
+          equation: "Surface Area = 6a², Volume = a³",
+          description: "Calculates the surface area and volume of a cube",
+          keywords: ["mensuration", "cube"]
+        }, {
+          name: "Surface Area and Volume of a Cuboid",
+          equation: "Surface Area = 2(lb + bh + hl), Volume = lwh",
+          description: "Calculates the surface area and volume of a cuboid",
+          keywords: ["mensuration", "cuboid"]
+        }, {
+          name: "Surface Area and Volume of a Cylinder",
+          equation: "Curved Surface Area = 2πrh, Total Surface Area = 2πr(r+h), Volume = πr²h",
+          description: "Calculates the surface area and volume of a cylinder",
+          keywords: ["mensuration", "cylinder"]
+        }, {
+          name: "Surface Area and Volume of a Cone",
+          equation: "Curved Surface Area = πrl, Total Surface Area = πr(r+l), Volume = 1/3πr²h",
+          description: "Calculates the surface area and volume of a cone",
+          keywords: ["mensuration", "cone"]
+        }, {
+          name: "Surface Area and Volume of a Sphere",
+          equation: "Surface Area = 4πr², Volume = 4/3πr³",
+          description: "Calculates the surface area and volume of a sphere",
+          keywords: ["mensuration", "sphere"]
+        }
+      ];
+      const formulasList = document.getElementById('formulas-list');
+      const searchInput = document.getElementById('search-input');
+      const modeToggle = document.getElementById('mode-toggle');
 
-        const formulasList = document.getElementById('formulas-list');
-        const searchInput = document.getElementById('search-input');
-        const modeToggle = document.getElementById('mode-toggle');
-
-        function displayFormulas(formulasToShow) {
-            formulasList.innerHTML = '';
-            formulasToShow.forEach(formula => {
-                const formulaElement = document.createElement('div');
-                formulaElement.className = 'formula-item';
-                formulaElement.innerHTML = `
-                    <div class="formula-name">${formula.name}</div>
-                    <div class="formula-equation">${formula.equation}</div>
-                    <div class="formula-description">${formula.description}</div>
-                    <div class="formula-keywords">
+      function displayFormulas(formulasToShow) {
+        formulasList.innerHTML = '';
+        formulasToShow.forEach(formula => {
+          const formulaElement = document.createElement('div');
+          formulaElement.className = 'formula-item';
+          formulaElement.innerHTML = `
+                    
+						
+						<div class="formula-name">${formula.name}</div>
+						<div class="formula-equation">${formula.equation}</div>
+						<div class="formula-description">${formula.description}</div>
+						<div class="formula-keywords">
                         ${formula.keywords.map(keyword => 
-                            `<span class="keyword-tag">${keyword}</span>`
+                            `
+							
+							<span class="keyword-tag">${keyword}</span>`
                         ).join('')}
-                    </div>
+                    
+						
+						</div>
                 `;
-                formulasList.appendChild(formulaElement);
-            });
-        }
-
-        function searchFormulas() {
-            const searchTerm = searchInput.value.toLowerCase();
-            const filteredFormulas = formulas.filter(formula => 
-                formula.name.toLowerCase().includes(searchTerm) ||
-                formula.equation.toLowerCase().includes(searchTerm) ||
-                formula.description.toLowerCase().includes(searchTerm) ||
-                formula.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm))
-            );
-            displayFormulas(filteredFormulas);
-        }
-
-        modeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            modeToggle.innerHTML = isDarkMode 
-                ? '<i class="fas fa-sun"></i>' 
-                : '<i class="fas fa-moon"></i>';
-            
-            localStorage.setItem('darkMode', isDarkMode);
+          formulasList.appendChild(formulaElement);
         });
+      }
 
-        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-        if (savedDarkMode) {
-            document.body.classList.add('dark-mode');
-            modeToggle.innerHTML = '<i class="fas fa-sun"></i>';
-        }
-
-        displayFormulas(formulas);
-        searchInput.addEventListener('input', searchFormulas);
+      function searchFormulas() {
+        const searchTerm = searchInput.value.toLowerCase();
+        const filteredFormulas = formulas.filter(formula => formula.name.toLowerCase().includes(searchTerm) || formula.equation.toLowerCase().includes(searchTerm) || formula.description.toLowerCase().includes(searchTerm) || formula.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm)));
+        displayFormulas(filteredFormulas);
+      }
+      modeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        const isDarkMode = document.body.classList.contains('dark-mode');
+        modeToggle.innerHTML = isDarkMode ? ' < i class = "fas fa-sun" >< /i>' : ' < i class = "fas fa-moon" >< /i>';
+        localStorage.setItem('darkMode', isDarkMode);
+      });
+      const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+      if (savedDarkMode) {
+        document.body.classList.add('dark-mode');
+        modeToggle.innerHTML = ' < i class = "fas fa-sun" >< /i>';
+      }
+      displayFormulas(formulas);
+      searchInput.addEventListener('input', searchFormulas);
     </script>
-</body>
+  </body>
 </html>
