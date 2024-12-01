@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Math Formula Vault</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            /* Light Mode Colors */
+            --bg-primary-light: #f0f4f8;
+            --bg-secondary-light: #ffffff;
+            --text-primary-light: #1a2b3c;
+            --text-secondary-light: #4a5f6d;
+            --accent-color-light: #3498db;
+            --hover-color-light: #2980b9;
+
+            /* Dark Mode Colors */
+            --bg-primary-dark: #0a1128;
+            --bg-secondary-dark: #142850;
+            --text-primary-dark: #ffffff;
+            --text-secondary-dark: #b0bec5;
+            --accent-color-dark: #00a8e8;
+            --hover-color-dark: #007ea7;
+
+            /* Default to Light Mode */
+            --bg-primary: var(--bg-primary-light);
+            --bg-secondary: var(--bg-secondary-light);
+            --text-primary: var(--text-primary-light);
+            --text-secondary: var(--text-secondary-light);
+            --accent-color: var(--accent-color-light);
+            --hover-color: var(--hover-color-light);
+        }
+
+        body.dark-mode {
+            --bg-primary: var(--bg-primary-dark);
+            --bg-secondary: var(--bg-secondary-dark);
+            --text-primary: var(--text-primary-dark);
+            --text-secondary: var(--text-secondary-dark);
+            --accent-color: var(--accent-color-dark);
+            --hover-color: var(--hover-color-dark);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            perspective: 1000px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        .top-header {
+            background-color: var(--bg-secondary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1rem 0;
+        }
+
+        .header-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .site-title {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .site-title i {
+            margin-right: 10px;
+        }
+
+        .mode-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .mode-toggle:hover {
+            color: var(--accent-color);
+            transform: rotate(180deg);
+        }
+
+        .search-container {
+            position: relative;
+            flex-grow: 1;
+            margin-left: 2rem;
+        }
+
+        #search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid var(--text-secondary);
+            border-radius: 20px;
+            font-size: 1rem;
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        #formulas-list {
+            display: grid;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .formula-item {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .formula-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, transparent 0%, var(--accent-color) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .formula-item:hover::before {
+            opacity: 0.1;
+        }
+
+        .formula-item:hover {
+            transform: translateY(-5px) rotateX(3deg);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .formula-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .formula-equation {
+            font-family: 'Courier New', monospace;
+            background-color: var(--bg-primary);
+            display: inline-block;
+            padding: 0.5rem;
+            border-radius: 5px;
+            margin: 0.5rem 0;
+            color: var(--text-primary);
+            border: 1px solid var(--text-secondary);
+        }
+
+        .formula-description {
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .formula-keywords {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .keyword-tag {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .footer {
+            background-color: var(--bg-secondary);
+            padding: 1.5rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .social-links {
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            color: var(--text-secondary);
+            margin: 0 10px;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+            transform: scale(1.2) rotate(360deg);
+        }
+    </style>
+</head>
+<body>
+    <header class="top-header">
+        <div class="header-content">
+            <div class="site-title">
+                <i class="fas fa-calculator"></i>
+                Math Formula Vault
+            </div>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="search-input" placeholder="Search formulas...">
+            </div>
+            <button id="mode-toggle" class="mode-toggle" aria-label="Toggle dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="formulas-list"></div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Math Formula Vault By Pavan.</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/pavan._.hegde/" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const formulas = [
+            {
+                name: "Pythagorean Theorem",
+                equation: "a² + b² = c²",
+                description: "Relates the lengths of the sides of a right triangle in Euclidean geometry",
+                keywords: ["geometry", "triangle", "right triangle"]
+            },
+            {
+                name: "Quadratic Formula",
+                equation: "x = [-b ± √(b² - 4ac)] / 2a",
+                description: "Solves quadratic equations of the form ax² + bx + c = 0",
+                keywords: ["algebra", "equation", "roots"]
+            },
+            {
+                name: "Area of a Circle",
+                equation: "A = πr²",
+                description: "Calculates the total space inside a circular region using radius",
+                keywords: ["geometry", "circle", "area"]
+            },
+            {
+                name: "Sine Function",
+                equation: "sin(θ) = opposite / hypotenuse",
+                description: "A fundamental trigonometric function in a right triangle",
+                keywords: ["trigonometry", "triangle", "angle"]
+            },
+            {
+                name: "Euler's Formula",
+                equation: "e^(iπ) + 1 = 0",
+                description: "A profound mathematical identity connecting fundamental constants",
+                keywords: ["complex numbers", "advanced math"]
+            }
+        ];
+
+        const formulasList = document.getElementById('formulas-list');
+        const searchInput = document.getElementById('search-input');
+        const modeToggle = document.getElementById('mode-toggle');
+
+        function displayFormulas(formulasToShow) {
+            formulasList.innerHTML = '';
+            formulasToShow.forEach(formula => {
+                const formulaElement = document.createElement('div');
+                formulaElement.className = 'formula-item';
+                formulaElement.innerHTML = `
+                    <div class="formula-name">${formula.name}</div>
+                    <div class="formula-equation">${formula.equation}</div>
+                    <div class="formula-description">${formula.description}</div>
+                    <div class="formula-keywords">
+                        ${formula.keywords.map(keyword => 
+                            `<span class="keyword-tag">${keyword}</span>`
+                        ).join('')}
+                    </div>
+                `;
+                formulasList.appendChild(formulaElement);
+            });
+        }
+
+        function searchFormulas() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const filteredFormulas = formulas.filter(formula => 
+                formula.name.toLowerCase().includes(searchTerm) ||
+                formula.equation.toLowerCase().includes(searchTerm) ||
+                formula.description.toLowerCase().includes(searchTerm) ||
+                formula.keywords.some(keyword => keyword.toLowerCase().includes(searchTerm))
+            );
+            displayFormulas(filteredFormulas);
+        }
+
+        modeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            modeToggle.innerHTML = isDarkMode 
+                ? '<i class="fas fa-sun"></i>' 
+                : '<i class="fas fa-moon"></i>';
+            
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+
+        const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+        if (savedDarkMode) {
+            document.body.classList.add('dark-mode');
+            modeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        displayFormulas(formulas);
+        searchInput.addEventListener('input', searchFormulas);
+    </script>
+</body>
+</html>
